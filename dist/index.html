@@ -2,9 +2,225 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Быстрый запуск Webpack</title>
+    <title>Virtual Keyboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
   <script defer src="script/index.js"></script><link href="styles/index.css" rel="stylesheet"></head>
   <body>
-    <p>Файл создан плагином html-webpack-plugin dev</p>
+    <!-- <header class="header">
+      <h1 class="header__title">Virtual Keyboard</h1>
+    </header> -->
+
+    <!-- <main class="main">
+      <textarea class="main__textarea" name="keyboard-textarea" id="keyboard-textarea" cols="68" rows="6"></textarea>
+      <div class="main-keyboard keyboard">
+        <div class="keyboard__row row">
+          <div class="row__key key key_letter">
+            <span class="key__value">`</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">1</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">2</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">3</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">4</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">5</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">6</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">7</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">8</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">9</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">0</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">-</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">=</span>
+          </div>
+          <div class="row__key key key_function key_backspace">
+            <span data-value="Backspace" class="key__value">Backspace</span>
+          </div>
+        </div>
+        <div class="keyboard__row row">
+          <div class="row__key key key_function key_tab">
+            <span data-value="Tab" class="key__value">Tab</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">q</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">w</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">e</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">r</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">t</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">y</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">u</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">i</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">o</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">p</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">[</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">]</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">\</span>
+          </div>
+          <div class="row__key key key_function">
+            <span data-value="Delete" class="key__value">Del</span>
+          </div>
+        </div>
+        <div class="keyboard__row row">
+          <div class="row__key key key_function key_capslock">
+            <span data-value="CapsLock" class="key__value">CapsLk</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">a</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">s</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">d</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">f</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">g</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">h</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">j</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">k</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">l</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">;</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">'</span>
+          </div>
+          <div class="row__key key key_function key_enter">
+            <span data-value="Enter" class="key__value">Enter</span>
+          </div>
+        </div>
+        <div class="keyboard__row row">
+          <div class="row__key key key_function key_shift">
+            <span data-value="ShiftLeft" class="key__value">Shift</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">z</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">x</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">c</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">v</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">b</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">n</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">m</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">,</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">.</span>
+          </div>
+          <div class="row__key key key_letter">
+            <span class="key__value">/</span>
+          </div>
+          <div class="row__key key key_function">
+            <span data-value="ArrowUp" class="key__value">↑</span>
+          </div>
+          <div class="row__key key key_function key_shift">
+            <span data-value="ShiftRight" class="key__value">Shift</span>
+          </div>
+        </div>
+        <div class="keyboard__row row">
+          <div class="row__key key key_function key_ctrl">
+            <span data-value="ControlLeft" class="key__value">Ctrl</span>
+          </div>
+          <div class="row__key key key_function">
+            <span data-value="MetaLeft" class="key__value">Win</span>
+          </div>
+          <div class="row__key key key_function">
+            <span data-value="AltLeft" class="key__value">Alt</span>
+          </div>
+          <div class="row__key key key_function key_space">
+            <span data-value="Space" class="key__value"></span>
+          </div>
+          <div class="row__key key key_function">
+            <span data-value="AltRight" class="key__value">Alt</span>
+          </div>
+          <div class="row__key key key_function">
+            <span data-value="ArrowLeft" class="key__value">←</span>
+          </div>
+          <div class="row__key key key_function">
+            <span data-value="ArrowDown" class="key__value">↓</span>
+          </div>
+          <div class="row__key key key_function">
+            <span data-value="ArrowRight" class="key__value">→</span>
+          </div>
+          <div class="row__key key key_function key_ctrl">
+            <span data-value="ControlRight" class="key__value">Ctrl</span>
+          </div>
+        </div>
+      </div>
+    </main> -->
+    <!-- <footer class="footer">
+      <h4 class="footer__title">Copyright©2023 solum-the-creator</h4>
+    </footer> -->
   </body>
 </html>

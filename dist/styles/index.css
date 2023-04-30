@@ -1,7 +1,105 @@
 /*!********************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/main.scss ***!
   \********************************************************************************************************/
-html {
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  color: #646b71;
+  background-color: #edf2f5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 0;
+}
+.header .header__title {
+  font-size: 2.5rem;
+  letter-spacing: 0.04em;
+}
+
+.main {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+.main .main__textarea {
+  padding: 8px;
+  font-size: 1.2rem;
+  color: #646b71;
+  line-height: 1.6rem;
+  border: 1px solid #e4ebf1;
+  border-radius: 10px;
+}
+
+.keyboard {
+  padding: 12px 12px 16px;
+  background-color: #f8fafc;
+  border-radius: 10px;
+  border: 1px solid #DBE5F1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.keyboard .keyboard__row {
+  display: flex;
+  gap: 8px;
+}
+
+.key {
+  width: 40px;
+  height: 40px;
+  background-color: #eff2f9;
+  color: #6e808e;
   font-size: 1rem;
-  color: lch(28 99 35);
+  border-radius: 8px;
+  box-shadow: -2px -2px 3px #FAFBFF, 2px 2px 4px rgba(22, 27, 29, 0.23);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.key.key_function {
+  background-color: #DBE5F1;
+}
+.key.key_backspace {
+  width: 108px;
+}
+.key.key_tab {
+  width: 60px;
+}
+.key.key_capslock {
+  width: 84px;
+}
+.key.key_enter {
+  width: 112px;
+}
+.key.key_shift {
+  width: 98px;
+}
+.key.key_ctrl {
+  width: 50px;
+}
+.key.key_space {
+  width: 328px;
+}
+
+.footer {
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 300;
+  font-style: none;
+  text-align: center;
 }
