@@ -1,0 +1,192 @@
+$color-back-keyboard: #f8fafc;
+$color-key-back-letter: #eff2f9;
+$color-key-back-function: #DBE5F1;
+$color-key-text: #6e808e;
+$color-key-back-active: #e4ebf1;
+$color-main-text: #646b71;
+$color-main-background: #edf2f5;
+
+
+@mixin outer-key-shadow {
+  box-shadow: -2px -2px 3px #FAFBFF,
+              2px 2px 4px rgba(22, 27, 29, 0.23);
+}
+
+@mixin inner-key-shadow {
+  box-shadow: inset -2px -2px 3px #FAFBFF,
+              inset 2px 2px 4px rgba(22, 27, 29, 0.23);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  color: $color-main-text;
+  background-color: $color-main-background;
+
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 0;
+
+  .header__title {
+    font-size: 2.5rem;
+    letter-spacing: 0.04em;
+  }
+}
+
+.main {
+  flex: 1 1 auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 24px;
+
+  .main__textarea {
+
+    padding: 8px;
+    font-size: 1.2rem;
+    color: $color-main-text;
+    line-height: 1.6rem;
+
+    border: 1px solid $color-key-back-active;
+    border-radius: 10px;
+  }
+
+  .main__description {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    .description__title {
+
+      font-size: 1rem;
+      font-weight: 300;
+    }
+  }
+}
+
+.keyboard {
+  padding: 12px 12px 16px;
+  background-color: $color-back-keyboard;
+  border-radius: 10px;
+  border: 1px solid $color-key-back-function;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .keyboard__row {
+    display: flex;
+    gap: 8px;
+  }
+}
+
+.key {
+  width: 40px;
+  height: 40px;
+  background-color: $color-key-back-letter;
+  color: $color-key-text;
+  font-size: 1rem;
+  border-radius: 8px;
+
+  box-shadow: -2px -2px 3px #FAFBFF, 2px 2px 4px rgba(22, 27, 29, 0.23);
+  animation: shadowFadeOut 0.1s ease;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+
+  &.key_function {
+    background-color: $color-key-back-function;
+  }
+
+  &.key_backspace {
+    width: 108px;
+  }
+
+  &.key_tab {
+    width: 60px;
+  }
+
+  &.key_capslock {
+    width: 84px;
+  }
+
+  &.key_enter {
+    width: 112px;
+  }
+
+  &.key_shift {
+    width: 98px;
+  }
+
+  &.key_ctrl {
+    width: 50px;
+  }
+
+  &.key_space {
+    width: 328px;
+  }
+
+  &:hover {
+    background-color: $color-key-back-active;
+  }
+  &:active {
+    box-shadow: inset -2px -2px 3px #FAFBFF,
+              inset 2px 2px 4px rgba(22, 27, 29, 0.23);
+    animation: shadowFadeIn 0.1s ease;
+  }
+
+  @keyframes shadowFadeIn {
+    0% { box-shadow: -2px -2px 3px #FAFBFF, 2px 2px 4px rgba(22, 27, 29, 0.23) }
+    50% { box-shadow: none; }
+    100% { box-shadow: inset -2px -2px 3px #FAFBFF,
+      inset 2px 2px 4px rgba(22, 27, 29, 0.23); }
+}
+
+  @keyframes shadowFadeOut {
+    0% { box-shadow: inset -2px -2px 3px #FAFBFF,
+      inset 2px 2px 4px rgba(22, 27, 29, 0.23); }
+    50% { box-shadow: none; }
+    100% { box-shadow: -2px -2px 3px #FAFBFF, 2px 2px 4px rgba(22, 27, 29, 0.23) }
+  }
+
+  &.key_down {
+    animation-name: shadowFadeIn;
+    animation-duration: 0.1s;
+    box-shadow: inset -2px -2px 3px #FAFBFF,
+      inset 2px 2px 4px rgba(22, 27, 29, 0.23);
+  }
+
+  &.key_up {
+    animation-name: shadowFadeOut;
+    animation-duration: 0.1s;
+    box-shadow: -2px -2px 3px #FAFBFF, 2px 2px 4px rgba(22, 27, 29, 0.23);
+  }
+
+}
+
+.footer {
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 300;
+  font-style: none;
+  text-align: center;
+}
