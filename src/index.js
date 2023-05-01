@@ -22,6 +22,20 @@ const generateMain = () => {
   document.body.appendChild(main);
   // eslint-disable-next-line no-unused-vars
   const keyboard = new Keyboard();
+  const descriptionKeyboard = document.createElement('div');
+  descriptionKeyboard.classList.add('main__description');
+  descriptionKeyboard.classList.add('description');
+  const descriptionOC = document.createElement('h4');
+  descriptionOC.classList.add('description__title');
+  descriptionOC.textContent = 'Клавиатура создана в операционной системе Windows';
+
+  const descriptionLang = document.createElement('h4');
+  descriptionLang.classList.add('description__title');
+  descriptionLang.textContent = 'Для переключения языка комбинация: левыe shift + alt';
+
+  descriptionKeyboard.appendChild(descriptionOC);
+  descriptionKeyboard.appendChild(descriptionLang);
+  main.appendChild(descriptionKeyboard);
 };
 
 const generateFooter = () => {

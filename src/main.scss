@@ -65,6 +65,17 @@ body {
     border: 1px solid $color-key-back-active;
     border-radius: 10px;
   }
+
+  .main__description {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    .description__title {
+
+      font-size: 1rem;
+      font-weight: 300;
+    }
+  }
 }
 
 .keyboard {
