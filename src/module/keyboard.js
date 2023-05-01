@@ -205,7 +205,7 @@ export default class Keyboard {
     const rowKey = document.createElement('div');
     rowKey.classList.add('row__key');
     rowKey.classList.add('key');
-
+    rowKey.dataset.code = key.codeKey;
     if (key.typeKey === 'letter') {
       rowKey.classList.add('key_letter');
     } else {
@@ -275,6 +275,8 @@ export default class Keyboard {
     const flatLayout = this.pickLayout().flat();
     const layoutKey = flatLayout.find((key) => key.codeKey === charCode);
     if (layoutKey) {
+      const currentKeyboardKey = this.keyboardContainer.querySelector(`.key[data-code="${layoutKey.codeKey}"]`);
+      currentKeyboardKey.classList.add('key_down');
       if (layoutKey.typeKey !== 'function') {
         this.typeCharacter(layoutKey[isUpperCase ? 'shiftKey' : 'valueKey']);
       } else {
@@ -282,7 +284,6 @@ export default class Keyboard {
       }
     }
 
-    // Handle language change with Shift + Alt
     if (this.isShiftPressed && this.isAltPressed) {
       this.toggleLayout();
     }
@@ -308,6 +309,16 @@ export default class Keyboard {
         break;
       default:
         break;
+    }
+    const currentKeyboardKey = this.keyboardContainer.querySelector(`.key[data-code="${code}"]`);
+    if (currentKeyboardKey) {
+      currentKeyboardKey.classList.remove('key_down');
+      currentKeyboardKey.classList.add('key_up');
+      currentKeyboardKey.addEventListener('animationend', (animationEvent) => {
+        if (animationEvent.animationName === 'shadowFadeOut') {
+          currentKeyboardKey.classList.remove('key_up');
+        }
+      });
     }
   }
 

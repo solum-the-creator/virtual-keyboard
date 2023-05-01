@@ -150,12 +150,26 @@ body {
       inset 2px 2px 4px rgba(22, 27, 29, 0.23); }
 }
 
-@keyframes shadowFadeOut {
+  @keyframes shadowFadeOut {
     0% { box-shadow: inset -2px -2px 3px #FAFBFF,
       inset 2px 2px 4px rgba(22, 27, 29, 0.23); }
     50% { box-shadow: none; }
     100% { box-shadow: -2px -2px 3px #FAFBFF, 2px 2px 4px rgba(22, 27, 29, 0.23) }
-}
+  }
+
+  &.key_down {
+    animation-name: shadowFadeIn;
+    animation-duration: 0.1s;
+    box-shadow: inset -2px -2px 3px #FAFBFF,
+      inset 2px 2px 4px rgba(22, 27, 29, 0.23);
+  }
+
+  &.key_up {
+    animation-name: shadowFadeOut;
+    animation-duration: 0.1s;
+    box-shadow: -2px -2px 3px #FAFBFF, 2px 2px 4px rgba(22, 27, 29, 0.23);
+  }
+
 }
 
 .footer {
