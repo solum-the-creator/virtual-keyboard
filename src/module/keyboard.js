@@ -8,13 +8,17 @@ export default class Keyboard {
     document.querySelectorAll('.main')[0].appendChild(this.inputField);
     document.querySelectorAll('.main')[0].appendChild(this.keyboardContainer);
 
+    this.isCapsLockOn = false;
+    this.layout = 'english';
+    this.isShiftPressed = false;
+    this.isCtrlPressed = false;
+    this.isAltPressed = false;
     this.cursorPos = 0;
 
-    this.layout = 'english';
     this.generateKeyboard();
 
-    // document.addEventListener('keydown', this.onKeyDown.bind(this));
-    // document.addEventListener('keyup', this.onKeyUp.bind(this));
+    window.addEventListener('keydown', (event) => this.onKeyDown(event));
+    window.addEventListener('keyup', (event) => this.onKeyUp(event));
   }
 
   genereateKeyboardContainer() {
@@ -31,6 +35,13 @@ export default class Keyboard {
     inputField.name = 'keyboard-textarea';
     inputField.rows = rows.toString();
     inputField.cols = cols.toString();
+    inputField.addEventListener('keydown', (event) => {
+      event.preventDefault();
+    });
+
+    inputField.addEventListener('keypress', (event) => {
+      event.preventDefault();
+    });
     this.inputField = inputField;
   }
 
@@ -43,7 +54,7 @@ export default class Keyboard {
       keyboardRow.classList.add('keyboard__row');
       keyboardRow.classList.add('row');
 
-      row.keys.forEach((key) => {
+      row.forEach((key) => {
         const keyElement = this.generateKey(key);
         keyElement.addEventListener('click', () => {
           if (key.typeKey === 'letter') {
@@ -59,7 +70,11 @@ export default class Keyboard {
   }
 
   typeCharacter(char) {
-    this.inputField.value += char;
+    let curChar = char;
+    if (this.isCapsLockOn && char.match(/[a-zA-Z]/)) {
+      curChar = char.toUpperCase();
+    }
+    this.inputField.value += curChar;
     this.cursorPos += 1;
   }
 
@@ -188,5 +203,81 @@ export default class Keyboard {
 
     rowKey.appendChild(keyValue);
     return rowKey;
+  }
+
+  onKeyDown(event) {
+    const charCode = event.code;
+
+    // If the pressed key is a printable character, type it on the virtual keyboard
+    if (!event.ctrlKey && !event.altKey && !event.metaKey && charCode !== 'Space') {
+      const isUpperCase = this.isCapsLockOn || (this.isShiftPressed && !this.isAltPressed);
+
+      const flatLayout = this.pickLayout().flat();
+
+      const layoutKey = flatLayout.find((key) => key.codeKey === charCode);
+      if (layoutKey && layoutKey.typeKey !== 'function') {
+        this.typeCharacter(layoutKey[isUpperCase ? 'shiftKey' : 'valueKey']);
+      }
+    }
+
+    const { code } = event;
+    switch (code) {
+      case 'ShiftLeft': // Shift
+        this.isShiftPressed = true;
+        break;
+      case 'ShiftRight': // Shift
+        this.isShiftPressed = true;
+        break;
+      case 'ControlLeft': // Ctrl
+        this.isCtrlPressed = true;
+        break;
+      case 'ControlRight': // Ctrl
+        this.isCtrlPressed = true;
+        break;
+      case 'AltLeft': // Alt
+        this.isAltPressed = true;
+        break;
+      case 'AltRight': // Alt
+        this.isAltPressed = true;
+        break;
+      default:
+        break;
+    }
+
+    // Handle language change with Shift + Alt
+    if (this.isShiftPressed && this.isAltPressed) {
+      this.toggleLayout();
+    }
+  }
+
+  onKeyUp(event) {
+    const { code } = event;
+    switch (code) {
+      case 'ShiftLeft': // Shift
+        this.isShiftPressed = false;
+        break;
+      case 'ShiftRight': // Shift
+        this.isShiftPressed = false;
+        break;
+      case 'ControlLeft': // Ctrl
+        this.isCtrlPressed = false;
+        break;
+      case 'ControlRight': // Ctrl
+        this.isCtrlPressed = false;
+        break;
+      case 'AltLeft': // Alt
+        this.isAltPressed = false;
+        break;
+      case 'AltRight': // Alt
+        this.isAltPressed = false;
+        break;
+      default:
+        break;
+    }
+  }
+
+  toggleLayout() {
+    this.layout = this.layout === 'english' ? 'russian' : 'english';
+    this.generateKeyboard();
   }
 }
