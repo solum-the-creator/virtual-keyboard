@@ -8,6 +8,8 @@ export default class Keyboard {
     document.querySelectorAll('.main')[0].appendChild(this.inputField);
     document.querySelectorAll('.main')[0].appendChild(this.keyboardContainer);
 
+    this.cursorPos = 0;
+
     this.layout = 'english';
     this.generateKeyboard();
 
@@ -43,13 +45,74 @@ export default class Keyboard {
 
       row.keys.forEach((key) => {
         const keyElement = this.generateKey(key);
-        // keyElement.addEventListener('click', () => {
-        //   this.typeCharacter(key);
-        // });
+        keyElement.addEventListener('click', () => {
+          if (key.typeKey === 'letter') {
+            this.typeCharacter(key.valueKey);
+          } else {
+            this.doActionKey(key.codeKey);
+          }
+        });
         keyboardRow.appendChild(keyElement);
       });
       this.keyboardContainer.appendChild(keyboardRow);
     });
+  }
+
+  typeCharacter(char) {
+    this.inputField.value += char;
+    this.cursorPos += 1;
+  }
+
+  doActionKey(key) {
+    switch (key) {
+      case 'Delete':
+        this.inputField.value = this.inputField.value.substring(0, this.cursorPos)
+          + this.inputField.value.substring(this.cursorPos + 1);
+        break;
+      case 'Backspace':
+        this.inputField.value = this.inputField.value.substring(0, this.cursorPos - 1)
+          + this.inputField.value.substring(this.cursorPos);
+        this.cursorPos -= 1;
+        break;
+      case 'Tab':
+        this.inputField.value += '\t';
+        this.cursorPos += 1;
+        break;
+      case 'CapsLock':
+        this.toggleCapsLock();
+        break;
+      case 'Enter':
+        this.inputField.value += '\n';
+        this.cursorPos += 1;
+        break;
+      case 'Shift':
+        // Do nothing, handle in the keydown event listener
+        break;
+      case 'Ctrl':
+        // Do nothing, handle in the keydown event listener
+        break;
+      case 'Alt':
+        // Do nothing, handle in the keydown event listener
+        break;
+      case 'Space':
+        this.inputField.value += ' ';
+        this.cursorPos += 1;
+        break;
+      default:
+        break;
+    }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  toggleCapsLock() {
+    console.log('capslock press');
+    // const capsLockKey = this.keyboardContainer.querySelector('.key-capslock');
+    // const letters = this.keyboardContainer.querySelectorAll('.virtual-keyboard-key:not(.key-capslock):not(.key-shift):not(.key-enter):not(.key-backspace):not(.key-tab):not(.key-space)');
+    // letters.forEach((letter) => {
+    //   const letterKey = letter;
+    //   letterKey.textContent = capsLockKey.classList.contains('active') ? letter.textContent.toLowerCase() : letter.textContent.toUpperCase();
+    // });
+    // capsLockKey.classList.toggle('active');
   }
 
   pickLayout() {
