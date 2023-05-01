@@ -56,11 +56,16 @@ export default class Keyboard {
 
       row.forEach((key) => {
         const keyElement = this.generateKey(key);
-        keyElement.addEventListener('click', () => {
+        keyElement.addEventListener('mousedown', () => {
           if (key.typeKey === 'letter') {
             this.typeCharacter(key.valueKey);
           } else {
             this.doActionKey(key.codeKey);
+          }
+        });
+        keyElement.addEventListener('mouseup', () => {
+          if (key.typeKey !== 'letter') {
+            this.onKeyUp(key.codeKey);
           }
         });
         keyboardRow.appendChild(keyElement);
@@ -74,8 +79,10 @@ export default class Keyboard {
     if (this.isCapsLockOn && char.match(/[a-zA-Z]/)) {
       curChar = char.toUpperCase();
     }
-    this.inputField.value += curChar;
-    this.cursorPos += 1;
+    this.inputField.value = this.inputField.value.substring(0, this.cursorPos)
+    + curChar + this.inputField.value.substring(this.cursorPos);
+    this.cursorPos += char.length;
+    this.inputField.setSelectionRange(this.cursorPos, this.cursorPos);
   }
 
   doActionKey(key) {
@@ -83,51 +90,107 @@ export default class Keyboard {
       case 'Delete':
         this.inputField.value = this.inputField.value.substring(0, this.cursorPos)
           + this.inputField.value.substring(this.cursorPos + 1);
+        this.inputField.setSelectionRange(this.cursorPos, this.cursorPos);
         break;
       case 'Backspace':
         this.inputField.value = this.inputField.value.substring(0, this.cursorPos - 1)
           + this.inputField.value.substring(this.cursorPos);
         this.cursorPos -= 1;
+        if (this.cursorPos < 0) this.cursorPos = 0;
+        this.inputField.setSelectionRange(this.cursorPos, this.cursorPos);
         break;
       case 'Tab':
-        this.inputField.value += '\t';
-        this.cursorPos += 1;
+        this.typeCharacter('    ');
         break;
       case 'CapsLock':
         this.toggleCapsLock();
         break;
       case 'Enter':
-        this.inputField.value += '\n';
-        this.cursorPos += 1;
+        this.typeCharacter('\n');
         break;
-      case 'Shift':
-        // Do nothing, handle in the keydown event listener
+      case 'ShiftLeft':
+      case 'ShiftRight':
+        this.isShiftPressed = true;
         break;
-      case 'Ctrl':
-        // Do nothing, handle in the keydown event listener
+      case 'ControlLeft':
+      case 'ControlRight':
+        this.isCtrlPressed = true;
         break;
-      case 'Alt':
-        // Do nothing, handle in the keydown event listener
+      case 'AltLeft':
+      case 'AltRight':
+        this.isAltPressed = true;
         break;
       case 'Space':
-        this.inputField.value += ' ';
+        this.typeCharacter(' ');
+        break;
+
+      case 'ArrowUp':
+        this.moveCursorUp();
+        break;
+
+      case 'ArrowLeft':
+        if (this.cursorPos === 0) this.cursorPos = 1;
+        this.cursorPos -= 1;
+        this.inputField.setSelectionRange(this.cursorPos, this.cursorPos);
+        break;
+      case 'ArrowRight':
+        if (this.cursorPos > this.inputField.value.length - 1) {
+          this.cursorPos = this.inputField.value.length - 1;
+        }
         this.cursorPos += 1;
+        this.inputField.setSelectionRange(this.cursorPos, this.cursorPos);
+        break;
+      case 'ArrowDown':
+        this.moveCursorDown();
         break;
       default:
         break;
     }
   }
 
+  moveCursorUp() {
+    const currentValue = this.inputField.value;
+
+    const currentLineStart = currentValue.lastIndexOf('\n', this.cursorPos - 1) + 1;
+
+    let currentLineEnd = currentValue.indexOf('\n', this.cursorPos);
+    if (currentLineEnd === -1) {
+      currentLineEnd = currentValue.length;
+    }
+    const currentLinePos = this.cursorPos - currentLineStart;
+
+    const prevLineStart = currentValue.lastIndexOf('\n', currentLineStart - 2) + 1;
+    const prevLineEnd = currentValue.indexOf('\n', prevLineStart);
+    const prevLineLength = prevLineEnd - prevLineStart;
+    const newCursorPos = prevLineStart + Math.min(currentLinePos, prevLineLength);
+    this.cursorPos = newCursorPos;
+    this.inputField.setSelectionRange(newCursorPos, newCursorPos);
+  }
+
+  moveCursorDown() {
+    const currentValue = this.inputField.value;
+    const currentLineStart = currentValue.lastIndexOf('\n', this.cursorPos - 1) + 1;
+    let currentLineEnd = currentValue.indexOf('\n', this.cursorPos);
+    if (currentLineEnd === -1) {
+      currentLineEnd = currentValue.length;
+    }
+    const currentLinePos = this.cursorPos - currentLineStart;
+
+    const nextLineStart = currentValue.indexOf('\n', currentLineEnd) + 1;
+
+    let nextLineEnd = currentValue.indexOf('\n', nextLineStart + 1);
+    if (nextLineEnd === -1) {
+      nextLineEnd = currentValue.length;
+    }
+    const nextLineLength = nextLineEnd - nextLineStart;
+    const newCursorPos = nextLineStart + Math.min(currentLinePos, nextLineLength);
+    this.cursorPos = newCursorPos;
+    this.inputField.setSelectionRange(newCursorPos, newCursorPos);
+  }
+
   // eslint-disable-next-line class-methods-use-this
   toggleCapsLock() {
-    console.log('capslock press');
-    // const capsLockKey = this.keyboardContainer.querySelector('.key-capslock');
-    // const letters = this.keyboardContainer.querySelectorAll('.virtual-keyboard-key:not(.key-capslock):not(.key-shift):not(.key-enter):not(.key-backspace):not(.key-tab):not(.key-space)');
-    // letters.forEach((letter) => {
-    //   const letterKey = letter;
-    //   letterKey.textContent = capsLockKey.classList.contains('active') ? letter.textContent.toLowerCase() : letter.textContent.toUpperCase();
-    // });
-    // capsLockKey.classList.toggle('active');
+    this.isCapsLockOn = !this.isCapsLockOn;
   }
 
   pickLayout() {
@@ -208,40 +271,15 @@ export default class Keyboard {
   onKeyDown(event) {
     const charCode = event.code;
 
-    // If the pressed key is a printable character, type it on the virtual keyboard
-    if (!event.ctrlKey && !event.altKey && !event.metaKey && charCode !== 'Space') {
-      const isUpperCase = this.isCapsLockOn || (this.isShiftPressed && !this.isAltPressed);
-
-      const flatLayout = this.pickLayout().flat();
-
-      const layoutKey = flatLayout.find((key) => key.codeKey === charCode);
-      if (layoutKey && layoutKey.typeKey !== 'function') {
+    const isUpperCase = (this.isShiftPressed && !this.isAltPressed);
+    const flatLayout = this.pickLayout().flat();
+    const layoutKey = flatLayout.find((key) => key.codeKey === charCode);
+    if (layoutKey) {
+      if (layoutKey.typeKey !== 'function') {
         this.typeCharacter(layoutKey[isUpperCase ? 'shiftKey' : 'valueKey']);
+      } else {
+        this.doActionKey(layoutKey.codeKey);
       }
-    }
-
-    const { code } = event;
-    switch (code) {
-      case 'ShiftLeft': // Shift
-        this.isShiftPressed = true;
-        break;
-      case 'ShiftRight': // Shift
-        this.isShiftPressed = true;
-        break;
-      case 'ControlLeft': // Ctrl
-        this.isCtrlPressed = true;
-        break;
-      case 'ControlRight': // Ctrl
-        this.isCtrlPressed = true;
-        break;
-      case 'AltLeft': // Alt
-        this.isAltPressed = true;
-        break;
-      case 'AltRight': // Alt
-        this.isAltPressed = true;
-        break;
-      default:
-        break;
     }
 
     // Handle language change with Shift + Alt
@@ -251,24 +289,21 @@ export default class Keyboard {
   }
 
   onKeyUp(event) {
-    const { code } = event;
+    let code = event;
+    if (event.code) {
+      code = event.code;
+    }
     switch (code) {
-      case 'ShiftLeft': // Shift
+      case 'ShiftLeft':
+      case 'ShiftRight':
         this.isShiftPressed = false;
         break;
-      case 'ShiftRight': // Shift
-        this.isShiftPressed = false;
-        break;
-      case 'ControlLeft': // Ctrl
+      case 'ControlLeft':
+      case 'ControlRight':
         this.isCtrlPressed = false;
         break;
-      case 'ControlRight': // Ctrl
-        this.isCtrlPressed = false;
-        break;
-      case 'AltLeft': // Alt
-        this.isAltPressed = false;
-        break;
-      case 'AltRight': // Alt
+      case 'AltLeft':
+      case 'AltRight':
         this.isAltPressed = false;
         break;
       default:
