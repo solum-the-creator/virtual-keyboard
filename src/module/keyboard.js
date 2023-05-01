@@ -9,7 +9,7 @@ export default class Keyboard {
     document.querySelectorAll('.main')[0].appendChild(this.keyboardContainer);
 
     this.isCapsLockOn = false;
-    this.layout = 'english';
+    this.layout = localStorage.keyboardLanguage || 'english';
     this.isShiftPressed = false;
     this.isCtrlPressed = false;
     this.isAltPressed = false;
@@ -324,6 +324,7 @@ export default class Keyboard {
 
   toggleLayout() {
     this.layout = this.layout === 'english' ? 'russian' : 'english';
+    localStorage.keyboardLanguage = this.layout;
     this.generateKeyboard();
   }
 }
