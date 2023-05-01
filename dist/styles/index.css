@@ -66,10 +66,12 @@ body {
   font-size: 1rem;
   border-radius: 8px;
   box-shadow: -2px -2px 3px #FAFBFF, 2px 2px 4px rgba(22, 27, 29, 0.23);
+  animation: shadowFadeOut 0.1s ease;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 .key.key_function {
   background-color: #DBE5F1;
@@ -94,6 +96,35 @@ body {
 }
 .key.key_space {
   width: 328px;
+}
+.key:hover {
+  background-color: #e4ebf1;
+}
+.key:active {
+  box-shadow: inset -2px -2px 3px #FAFBFF, inset 2px 2px 4px rgba(22, 27, 29, 0.23);
+  animation: shadowFadeIn 0.1s ease;
+}
+@keyframes shadowFadeIn {
+  0% {
+    box-shadow: -2px -2px 3px #FAFBFF, 2px 2px 4px rgba(22, 27, 29, 0.23);
+  }
+  50% {
+    box-shadow: none;
+  }
+  100% {
+    box-shadow: inset -2px -2px 3px #FAFBFF, inset 2px 2px 4px rgba(22, 27, 29, 0.23);
+  }
+}
+@keyframes shadowFadeOut {
+  0% {
+    box-shadow: inset -2px -2px 3px #FAFBFF, inset 2px 2px 4px rgba(22, 27, 29, 0.23);
+  }
+  50% {
+    box-shadow: none;
+  }
+  100% {
+    box-shadow: -2px -2px 3px #FAFBFF, 2px 2px 4px rgba(22, 27, 29, 0.23);
+  }
 }
 
 .footer {

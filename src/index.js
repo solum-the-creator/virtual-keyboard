@@ -20,6 +20,7 @@ const generateMain = () => {
   main.classList.add('main');
 
   document.body.appendChild(main);
+  // eslint-disable-next-line no-unused-vars
   const keyboard = new Keyboard();
 };
 
